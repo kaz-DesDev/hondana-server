@@ -6,6 +6,16 @@ const typeDefs = gql`
     book(isbn: ID!): Book
   }
 
+  type Mutation {
+    addBook(isbn: ID!): BookUpdateResponse!
+  }
+
+  type BookUpdateResponse {
+    success: Boolean!
+    message: String
+    book: Book
+  }
+
   type Book {
     isbn: ID!
     title: String

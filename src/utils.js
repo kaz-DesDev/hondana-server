@@ -55,5 +55,5 @@ module.exports.createStore = () => {
     isbn: Sequelize.STRING,
   });
 
-  return { db, users, trips };
+  return { db, users, trips, books };
 };
