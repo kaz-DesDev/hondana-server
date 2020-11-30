@@ -1,9 +1,10 @@
 const { RESTDataSource } = require('apollo-datasource-rest');
 
 class BookAPI extends RESTDataSource {
-    constructor() {
+    constructor({ store }) {
         super();
         this.baseURL = 'https:/api.openbd.jp/v1/';
+        this.store = store;
     }
 
     bookReducer(book) {
@@ -29,6 +30,20 @@ class BookAPI extends RESTDataSource {
             isbns.map(isbn => this.getBookByIsbn({ isbn })),
         );
     }
+
+    async addBook({ isbn }) {
+        const res = await this.store.books.findOrCreate({
+          where: { isbn },
+        });
+        return res && res.length ? res[0].get() : false;
+    }
+
+    async getAllBooks() {
+        const found = await this.store.books.findAll();
+        return found && found.length
+          ? found.map(l => l.dataValues.isbn).filter(l => !!l)
+          : [];
+      }
 }
 
 module.exports = BookAPI;

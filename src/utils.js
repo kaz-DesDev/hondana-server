@@ -49,5 +49,11 @@ module.exports.createStore = () => {
     userId: Sequelize.INTEGER,
   });
 
+  const books = db.define('book', {
+    createdAt: Sequelize.DATE,
+    updatedAt: Sequelize.DATE,
+    isbn: Sequelize.STRING,
+  });
+
   return { db, users, trips };
 };
