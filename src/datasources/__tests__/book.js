@@ -49,7 +49,12 @@ describe('[bookAPI.getBooksByIsbns]', () => {
 const mockBook = {
     isbn: 9784344036239,
     title: "明け方の若者たち",
-    cover: "https://cover.openbd.jp/9784344036239.jpg"
+    volume: "",
+    series: "",
+    publisher: "幻冬舎",
+    pubdate: "20200611",
+    cover: "https://cover.openbd.jp/9784344036239.jpg",
+    author: "カツセマサヒコ／著"
 }
 
 // raw launch book from API

@@ -9,8 +9,13 @@ class BookAPI extends RESTDataSource {
     bookReducer(book) {
         return {
             isbn: book.summary.isbn || 0,
-            title: book.summary.title,
-            cover: book.summary.cover,
+            title: book.summary.title || '',
+            volume: book.summary.volume || '',
+            series: book.summary.series || '',
+            publisher: book.summary.publisher || '',
+            pubdate: book.summary.pubdate || '',
+            cover: book.summary.cover || '',
+            author: book.summary.author || ''
         };
     }
 
