@@ -8,6 +8,7 @@ const typeDefs = gql`
   type Book {
     isbn: ID!
     title: String
+    cover: String
   }
 `;
 

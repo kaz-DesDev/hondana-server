@@ -48,7 +48,8 @@ describe('[bookAPI.getBooksByIsbns]', () => {
  // properly transformed book
 const mockBook = {
     isbn: 9784344036239,
-    title: "明け方の若者たち"
+    title: "明け方の若者たち",
+    cover: "https://cover.openbd.jp/9784344036239.jpg"
 }
 
 // raw launch book from API

@@ -10,6 +10,7 @@ class BookAPI extends RESTDataSource {
         return {
             isbn: book.summary.isbn || 0,
             title: book.summary.title,
+            cover: book.summary.cover,
         };
     }
 
