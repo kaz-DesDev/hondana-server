@@ -21,3 +21,22 @@ describe('[Query.book]', () => {
     expect(getBookByIsbn).toBeCalledWith({ isbn: 9784344036239 });
   });
 });
+
+describe('[Query.books]', () => {
+  const mockContext = {
+    dataSources: {
+      bookAPI: { getAllBooks: jest.fn() },
+    },
+  };
+  // just for easy access
+  const { getAllBooks } = mockContext.dataSources.bookAPI;
+
+  it('calls lookup from store', async () => {
+    // NOTE: these results get reversed in the resolver
+    getAllBooks.mockReturnValueOnce([{ isbn: 9784344036239 }]);
+
+    // check the resolver response
+    const res = await resolvers.Query.books(null, {}, mockContext);
+    expect(res).toEqual([{ isbn: 9784344036239 }]);
+  });
+});
