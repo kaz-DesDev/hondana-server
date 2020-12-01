@@ -4,14 +4,16 @@ const { ApolloServer } = require('apollo-server');
 
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
+const { createStore } = require('./utils');
 
 const BookAPI = require('./datasources/book');
 
 const internalEngineDemo = require('./engine-demo');
 
-// set up any dataSources our resolvers need
+const store = createStore();
+
 const dataSources = () => ({
-  bookAPI: new BookAPI(),
+  bookAPI: new BookAPI({ store }),
 });
 
 // Set up Apollo Server

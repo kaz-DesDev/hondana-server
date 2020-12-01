@@ -2,7 +2,18 @@ const { gql } = require('apollo-server');
 
 const typeDefs = gql`
   type Query {
+    books: [Book]!
     book(isbn: ID!): Book
+  }
+
+  type Mutation {
+    addBook(isbn: ID!): BookUpdateResponse!
+  }
+
+  type BookUpdateResponse {
+    success: Boolean!
+    message: String
+    book: Book
   }
 
   type Book {

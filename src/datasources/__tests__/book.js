@@ -3,8 +3,16 @@ const BookAPI = require('../book');
 const mocks = {
     get: jest.fn(),
 };
+const mockStore = {
+  books: {
+    findOrCreate: jest.fn(),
+    destroy: jest.fn(),
+    findAll: jest.fn(),
+  },
+};
+module.exports.mockStore = mockStore;
 
-const ds = new BookAPI();
+const ds = new BookAPI({ store: mockStore });
 ds.get = mocks.get;
 
 describe('[BookAPI.APIReducer]', () => {
@@ -40,6 +48,48 @@ describe('[bookAPI.getBooksByIsbns]', () => {
       ds.getBookByIsbn = getBookByIsbn;
     });
 });
+
+describe('[BookAPI.addBook]', () => {
+  it('calls store creator and returns result', async () => {
+    mockStore.books.findOrCreate.mockReturnValueOnce([{ get: () => 'heya' }]);
+
+    // check the result of the fn
+    const res = await ds.addBook({ isbn: 9784344036239 });
+    expect(res).toBeTruthy();
+
+    // make sure store is called properly
+    expect(mockStore.books.findOrCreate).toBeCalledWith({
+      where: { isbn: 9784344036239 },
+    });
+  });
+});
+
+describe('[BookAPI.getAllBooks]', () => {
+  it('looks up books by user', async () => {
+    const books = [
+      { dataValues: { isbn: 9784344036239 } },
+      { dataValues: { isbn: 9784788514348 } },
+    ];
+    mockStore.books.findAll.mockReturnValueOnce(books);
+
+    // check the result of the fn
+    const res = await ds.getAllBooks();
+    expect(res).toEqual([9784344036239, 9784788514348]);
+
+    // make sure store is called properly
+    expect(mockStore.books.findAll).toBeCalledWith();
+  });
+
+  it('returns empty array if nothing found', async () => {
+    // store lookup is not mocked to return anything, so this
+    // simulates a failed lookup
+
+    // check the result of the fn
+    const res = await ds.getAllBooks();
+    expect(res).toEqual([]);
+  });
+});
+
 
 /**
  * MOCK DATA BELOW
