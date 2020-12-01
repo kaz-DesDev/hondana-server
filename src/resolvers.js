@@ -1,14 +1,17 @@
 module.exports = {
   Query: {
-    books: (_, __, { dataSources }) =>
-      dataSources.bookAPI.getAllBooks(),
+    books: async (_, __, { dataSources }) => {
+      const booksIsbn = await dataSources.bookAPI.getAllBooks();
+      const res = await dataSources.bookAPI.getBooksByIsbns({ isbns: booksIsbn });
+      return res;
+    },
     book: (_, { isbn }, { dataSources }) =>
-      dataSources.bookAPI.getBookByIsbn({ isbn: isbn}),
+      dataSources.bookAPI.getBookByIsbn({ isbn: isbn }),
   },
   Mutation: {
     addBook: async (_, { isbn }, { dataSources }) => {
       const book = await dataSources.bookAPI.getBookByIsbn({ isbn });
-      if (!book) { 
+      if (!book) {
         return {
           success: false,
           message: "指定したISBNで検索した結果，該当の書籍が見つかりませんでした。",
